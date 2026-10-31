@@ -272,7 +272,7 @@ function buildSlides(li){
  const rowSay=L.map(x=>x.k).join(', ');
  const picker=`<div class="picker"><span>Lesson</span>${ROWS.map((r,i)=>`<button class="pick ${i===li?'cur':''}" data-lesson="${i}" aria-label="${r[1]} row lesson">${r[0]}</button>`).join('')}</div>`;
  S.push({part:'👋 Hello',builds:2,note:`<b>Wave hello!</b> Say <b>안녕하세요</b> (annyeonghaseyo) and let the kids say it back. Tell them: Korean letters snap together like LEGO! A consonant and a vowel make one block: ㄱ + ㅏ = 가. Press → to show today's letters. Pick a different lesson with the row buttons on the right.`,
-  html:()=>`<img class="hello-portrait" src="${IMG.portrait}" alt="Sensei"><img class="banner" src="${IMG.banner}" alt="선생님"><div class="hello-row"><img class="wave" src="${IMG.wave}" alt="Sensei waving"><div style="display:flex;flex-direction:column;gap:30px;align-items:flex-start"><div class="bubble" data-b="1"><span class="jpw">안녕하세요!</span><br>I'm your Sensei!</div><div data-b="2" style="display:flex;flex-direction:column;gap:16px"><div style="font-size:44px;font-weight:700">Today: <span style="color:var(--pink)">${ROWS[li][1]}</span>!</div>${todayTiles}</div></div></div>${picker}`,
+  html:()=>`<img class="hello-portrait" src="${IMG.portrait}" alt="Sensei"><img class="banner" src="${IMG.banner}" alt="선생님"><div class="hello-row"><img class="wave" src="${IMG.wave}" alt="Sensei waving"><div style="display:flex;flex-direction:column;gap:30px;align-items:flex-start"><div class="bubble" data-b="1"><span class="jpw">안녕하세요!</span><br>I'm your teacher, 선생님!</div><div data-b="2" style="display:flex;flex-direction:column;gap:16px"><div style="font-size:44px;font-weight:700">Today: <span style="color:var(--pink)">${ROWS[li][1]}</span>!</div>${todayTiles}</div></div></div>${picker}`,
   build:b=>{if(b===1)speak('안녕하세요!');if(b===2)speak(rowSay)},sound:()=>speak('안녕하세요!')});
  if(review.length){
   const rv=review.slice(-10);
@@ -318,8 +318,8 @@ function buildSlides(li){
  const tg=shuffle(L).slice(0,Math.min(4,L.length));
  const wr=tg.map((t,i)=>{const ok=i%2===0;let said=t;if(!ok){const pool=learned.filter(x=>x!==t&&x.r!==t.r);said=shuffle(pool.filter(x=>x.row===t.row).length?pool.filter(x=>x.row===t.row):pool)[0]}return{t,said,ok}});
  shuffle(wr).forEach((g,ri)=>{
-  S.push({part:`🙅 Yes or no ${ri+1}`,color:g.t,builds:1,note:`Say the sound on Sensei's bubble. Is it right? Kids shout <b>"네!"</b> (ne, yes) with a thumbs up 👍, or <b>"아니요!"</b> (aniyo, no) with arms in an ✖. Then → to reveal.`,
-   html:()=>kick(`🙅 Is Sensei right? · ${ri+1} of ${wr.length}`)+`<div class="wrongrow"><div class="mega mid" style="background:${g.t.c};box-shadow:0 16px 0 ${g.t.deep}">${g.t.k}</div><div class="verdict" id="vd">🤔</div></div>`+face(`This is <b>“${g.said.r}”</b>!`)+`<div class="shout"><span class="ok">👍 네!</span><span class="ng">✖ 아니요!</span></div>`,
+  S.push({part:`🙅 Yes or no ${ri+1}`,color:g.t,builds:1,note:`Say the sound on the teacher's bubble. Is it right? Kids shout <b>"네!"</b> (ne, yes) with a thumbs up 👍, or <b>"아니요!"</b> (aniyo, no) with arms in an ✖. Then → to reveal.`,
+   html:()=>kick(`🙅 Is 선생님 right? · ${ri+1} of ${wr.length}`)+`<div class="wrongrow"><div class="mega mid" style="background:${g.t.c};box-shadow:0 16px 0 ${g.t.deep}">${g.t.k}</div><div class="verdict" id="vd">🤔</div></div>`+face(`This is <b>“${g.said.r}”</b>!`)+`<div class="shout"><span class="ok">👍 네!</span><span class="ng">✖ 아니요!</span></div>`,
    enter:()=>setTimeout(()=>speak(g.said.k),500),
    build:()=>{$('#vd').textContent=g.ok?'⭕':'❌';$('#vd').style.animation='boing .6s';if(g.ok){ding();confetti(60)}else{buzz();setTimeout(()=>speak(`아니에요! ${g.t.k}`),500)}},sound:()=>speak(g.said.k)});
  });
