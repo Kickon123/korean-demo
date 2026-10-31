@@ -118,6 +118,7 @@ footer{margin-top:48px;text-align:center;font-size:15px;font-weight:600;color:va
 /* One entry per lesson show. c = main color, soft = chip color. */
 const LESSONS=[
   {href:'hangul.html',kana:'가나다',title:'Hangul Basics',jp:'한글',desc:'Vowels, consonants, and how they snap together into letter blocks: ㄱ + ㅏ = 가!',chips:['3 lessons','30 letters'],c:'#3A86FF',soft:'#DCEBFF'},
+  {href:'consonants.html',kana:'ㅋㄲㅆ',title:'More Consonants',jp:'격음 · 된소리',desc:'Add a line for a puff of air (ㄱ→ㅋ). Double it for a strong sound (ㄱ→ㄲ).',chips:['2 lessons','9 letters'],c:'#2EB872',soft:'#DDF5E8'},
 ];
 const esc=s=>String(s).replace(/[&<>"]/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[ch]));
 document.getElementById('grid').innerHTML=LESSONS.map((l,i)=>`
