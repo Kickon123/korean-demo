@@ -249,7 +249,7 @@ const kick=(t)=>`<div class="kicker">${t}</div>`;
 
 /* ---------- voice ---------- */
 let jaVoice=null,jaVoices=[];
-const score=v=>{const n=v.name;let s=0;if(/natural|neural|online/i.test(n))s+=50;if(/sunhi|injoon|heami|sora|seoyeon|jimin/i.test(n))s+=20;if(/google/i.test(n))s+=30;if(/kyoko|o-ren|siri|premium|enhanced/i.test(n))s+=25;return s};
+const score=v=>{const n=v.name;let s=0;if(/natural|neural|online/i.test(n))s+=50;if(/sunhi|sun-hi|heami|jimin|seohyeon|soonbok|yujin|sora|seoyeon/i.test(n))s+=60;if(/injoon|bongjin|gookmin|hyunsu|minsu|jinho|\bmale\b/i.test(n))s-=200;if(/google/i.test(n))s+=30;if(/siri|premium|enhanced/i.test(n))s+=25;return s};
 function vlabel(v){const n=v.name;if(/^google/i.test(n))return 'Google';let t=n.replace(/^(Microsoft|Apple)\s+/i,'').replace(/\(.*?\)|\s-\s.*$|Online|Natural|Neural|Korean|Korea|한국어/gi,'').trim().split(/\s+/)[0]||'Voice';return t.slice(0,10)+(/natural|neural|enhanced|premium/i.test(n)?' ✨':'')}
 function loadVoices(){jaVoices=speechSynthesis.getVoices().filter(x=>/^ko/i.test(x.lang)).sort((a,b)=>score(b)-score(a));let saved='';try{saved=localStorage.getItem('ko-voice')||''}catch(e){}jaVoice=jaVoices.find(v=>v.name===saved)||jaVoices[0]||null;$('#voice').innerHTML=jaVoices.length?jaVoices.map(v=>`<option value="${v.name}" ${v===jaVoice?'selected':''}>🗣️ ${vlabel(v)}</option>`).join(''):'<option>No Japanese voice</option>'}
 if('speechSynthesis' in window){loadVoices();speechSynthesis.onvoiceschanged=loadVoices;setTimeout(loadVoices,600)}
