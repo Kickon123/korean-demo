@@ -241,7 +241,9 @@ const $=s=>document.querySelector(s);
 const shuffle=a=>a.map(v=>[Math.random(),v]).sort((x,y)=>x[0]-y[0]).map(v=>v[1]);
 const L0='ㄱㄲㄴㄷㄸㄹㅁㅂㅃㅅㅆㅇㅈㅉㅊㅋㅌㅍㅎ',V0='ㅏㅐㅑㅒㅓㅔㅕㅖㅗㅘㅙㅚㅛㅜㅝㅞㅟㅠㅡㅢㅣ';
 const hasK=(ch,k)=>{const c=ch.charCodeAt(0)-0xAC00;if(c<0||c>11171)return ch===k;return L0[Math.floor(c/588)]===k||V0[Math.floor(c%588/28)]===k||ch===k};
-const mark=(w,k)=>{let done=false;return [...w].map(ch=>!done&&hasK(ch,k)?(done=true,'<em>'+ch+'</em>'):ch).join('')};
+const T0=['','ㄱ','ㄲ','ㄳ','ㄴ','ㄵ','ㄶ','ㄷ','ㄹ','ㄺ','ㄻ','ㄼ','ㄽ','ㄾ','ㄿ','ㅀ','ㅁ','ㅂ','ㅄ','ㅅ','ㅆ','ㅇ','ㅈ','ㅊ','ㅋ','ㅌ','ㅍ','ㅎ'];
+const hasF=(ch,k)=>{const c=ch.charCodeAt(0)-0xAC00;return c>=0&&c<11172&&T0[c%28]===k};
+const mark=(w,k,fin)=>{let done=false;return [...w].map(ch=>!done&&(fin?hasF(ch,k):hasK(ch,k))?(done=true,'<em>'+ch+'</em>'):ch).join('')};
 const face=(t)=>`<div class="talk"><img class="yuna-face" src="${IMG.face}" alt="Sensei"><div class="bubble">${t}</div></div>`;
 const kick=(t)=>`<div class="kicker">${t}</div>`;
 
@@ -292,7 +294,7 @@ function buildSlides(li){
    enter:()=>drawStrokes(x),sound:()=>drawStrokes(x)});
   const wt=x.mode==='has'?`Words with ${tag} inside`:`Words with ${tag}`;
   S.push({part:`${x.k} Words`,color:x,builds:x.words.length*2,note:`Read the clue first and let kids <b>guess</b> before you press →. Next press uncovers the picture. Say the word together, then → again to repeat it.`,
-   html:()=>kick(wt)+`<div class="words">${x.words.map((w,j)=>`<div class="word" id="w${j}"><span class="pic">${w[3]}</span><span class="w"${w[0].length>4?` style="font-size:${Math.floor(300/w[0].length)}px"`:''}>${mark(w[0],x.k)}</span><span class="r">${w[1]}</span><span class="en">${w[2]}</span><div class="clue">💭 ${w[4]}</div><div class="cover" id="cv${j}">${'<i></i>'.repeat(20)}<span class="q">?</span></div></div>`).join('')}</div>`,
+   html:()=>kick(wt)+`<div class="words">${x.words.map((w,j)=>`<div class="word" id="w${j}"><span class="pic">${w[3]}</span><span class="w"${w[0].length>4?` style="font-size:${Math.floor(300/w[0].length)}px"`:''}>${mark(w[0],x.k,x.fin)}</span><span class="r">${w[1]}</span><span class="en">${w[2]}</span><div class="clue">💭 ${w[4]}</div><div class="cover" id="cv${j}">${'<i></i>'.repeat(20)}<span class="q">?</span></div></div>`).join('')}</div>`,
    build:b=>{const j=Math.floor((b-1)/2),st=(b-1)%2;if(st===0){$('#cv'+j).classList.add('open');$('#w'+j).classList.add('shown');ding();setTimeout(()=>speak(x.words[j][0]),350)}else{speak(x.words[j][0]+', '+x.words[j][0])}},
    sound:(el,b)=>{const j=Math.max(0,Math.min(x.words.length-1,Math.floor((b-1)/2)));speak(b?x.words[j][0]:x.k)}});
  });
